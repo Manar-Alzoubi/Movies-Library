@@ -3,7 +3,8 @@
 **Author Name**: Manar Alzoubi
 
 ## WRRC
-Add an image of your WRRC here
+![WRRC](![IMG_20220130_194959_830](https://user-images.githubusercontent.com/97833415/151711373-c5ab15c5-5894-42ce-a29e-b7bf057a5c1f.jpg)
+)
 
 ## Overview
 
