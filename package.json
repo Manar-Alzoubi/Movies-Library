@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Manar-Alzoubi/Movies-Library#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^15.0.0",
     "express": "^4.17.2"
   }
 }

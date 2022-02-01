@@ -9,9 +9,11 @@ const axios= require('axios');
 
 const PORT= process.env.PORT;
 
-const myMovie=require(`./Movies-Library/MovieData/data.json`);
+//const myMovie=require(`./Movies-Library/MovieData/data.json`);
+const res = require('express/lib/response');
 
-//let url = `https://api.themoviedb.org/3/trending/all/week?apiKey=${process.env.APIKEY}`;
+let url = `https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.API_KEY}`;
+
 
 //  //creating a server
  const server= express();
@@ -20,14 +22,16 @@ const myMovie=require(`./Movies-Library/MovieData/data.json`);
  server.get('/',handelHomePage);
  server.get('/fav', handelfavPage);
  
- server.get('/searchMov',searchMovHandler);
+ server.get('/search',searchMovHandler);
  server.get('/trending',trendsHandler);
  server.use('*',handelNotFound);
 server.use(errorHandler);
 
 
-function Movie(title,poster_path,overview){
+function Movie(id,title,release_date,poster_path,overview){
+    this.id=id;
     this.title= title;
+    this.release_date=release_date;
     this.poster_path = poster_path;
     this.overview= overview;
  }
@@ -43,9 +47,6 @@ function handelHomePage(req,res){
      return res.status(200).json(mov);
     } 
 
-    server.listen(PORT,()=>{
-        console.log(`listining to port ${PORT}`)
-    })
 
     function handelfavPage(req,response)
 {
@@ -56,13 +57,17 @@ function handelHomePage(req,res){
 
 
     function trendsHandler(req,res){
+ console.log(url);       
         axios.get(url)
-        .then((result)=>{
-            result.data.movies.forEach(movie1 =>{
-                newArr.push(new Movie(movie1.id,movie1.title,movie1.release_date,movie1.poster_path,movie1.overview));
+        .then((x)=>{
+            console.log(x.data);
+           let movies= x.data.results.map(movie1 =>{
+            
+                return new Movie(movie1.id,movie1.title,movie1.release_date,movie1.poster_path,movie1.overview);
             })
+            res.status(200).json(movies);
         }).catch((err)=>{
-    
+            errorHandler(err,req,res);
         })
     }
            
@@ -71,15 +76,18 @@ function handelHomePage(req,res){
 
 
     function searchMovHandler(req,res){
-        let url = `https://api.themoviedb.org/3/search/movie??apiKey=${process.env.APIKEY}`;
+        let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=The&page=3`;
+        console.log(url);
         axios.get(url)
-        .then((result)=>{
-            let recipemoviess = result.data.movies.map(movie1 =>{
-                newArr.push(new Movie(movie1.id,movie1.title,movie1.release_date,movie1.poster_path,movie1.overview));
+        .then((x)=>{
+            let movies = x.data.results.map(movie1 =>{
+                return new Movie(movie1.title,movie1.overview,movie1.original_title,movie1.poster_path,movie1.backdrop_path);
             })
+            res.status(200).json(movies);
         }).catch((err)=>{
-    
+                errorHandler(err,req,res);
         })
+        
     }
 
 

@@ -24,8 +24,13 @@
 <!-- create a constructor to read data files -->
 <!-- run the server by command (npm start )  and stop it using (^C )-->
 <!-- create a constructor-->
-<!-- create a constructor-->
 
+
+## methods in repo 
+<!-- trendsHandler(req,res)> to handel the trending movies and return some properities of the movie-->
+
+<!--> searchMovHandler(req,res)  handling the operation of search about a movie to return the properities of it -->
 
 ## Project Features
 <!-- What are the features included in you app -->
+ 
