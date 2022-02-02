@@ -6,8 +6,18 @@ require('dotenv').config();
 const express= require('express');
 const cors = require('cors');
 const axios= require('axios');
+const pg = require('pg');
 
+
+
+// I attempt to make pull and it dosent make 
+console.log ("my name is Manar");
+
+
+const client = new pg.Client(process.env.DATABASE_URL);
 const PORT= process.env.PORT;
+
+server.use(express.json());
 
 //const myMovie=require(`./Movies-Library/MovieData/data.json`);
 const res = require('express/lib/response');
@@ -91,6 +101,34 @@ function handelHomePage(req,res){
     }
 
 
+    function addMovie(req, res)
+{   const movieObj = req.body;
+
+      let sql =  `INSERT INTO addMovie(title,genre_ids,original_language,original_title,poster_path,video,vote_average,overview,release_date,vote_count,id,adult,backdrop_path,popularity,media_type) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *;`
+      let values=[movieObj.title,movieObj.genre_ids,movieObj.original_language,movieObj.original_title,movieObj.poster_path,movieObj.video,movieObj.vote_average,movieObj.vote_average,movieObj.overview,movieObj.release_date,movieObj.vote_count,movieObj.id,movieObj.adult,movieObj.backdrop_path,movieObj.popularity,movieObj.media_type,];
+      client.query(sql,values).then(data =>{
+
+    client.query(sql,values).then(data =>{
+        res.status(200).json(data.rows);
+    }).catch(error=>{
+        errorHandler(error,req,res)
+    });
+},
+
+
+
+    function getMovies(req,res){
+        const movieObj = req.body;
+      
+        let sql = `INSERT INTO addMovie(title,genre_ids,original_language,original_title,poster_path,video,vote_average,overview,release_date,vote_count,id,adult,backdrop_path,popularity,media_type) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) RETURNING *;`
+        let values=[movieObj.title,movieObj.genre_ids,movieObj.original_language,movieObj.original_title,movieObj.poster_path,movieObj.video,movieObj.vote_average,movieObj.vote_average,movieObj.overview,movieObj.release_date,movieObj.vote_count,movieObj.id,movieObj.adult,movieObj.backdrop_path,movieObj.popularity,movieObj.media_type,];
+        client.query(sql,values).then(data =>{
+            res.status(200).json(data.rows);
+        }).catch(error=>{
+            errorHandler(error,req,res)
+        });
+      }
+
 function handelNotFound(req,response)
 {
     return response.status(404).send("Sorry, something went wrong");
@@ -117,3 +155,15 @@ server.listen(PORT,()=>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+// I hope it makes Pull request since it dosent be able
