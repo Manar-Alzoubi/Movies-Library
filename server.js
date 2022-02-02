@@ -22,7 +22,7 @@ server.use(express.json());
 //const myMovie=require(`./Movies-Library/MovieData/data.json`);
 const res = require('express/lib/response');
 
-let url = `https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.API_KEY}`;
+let url = `https://api.themoviedb.org/3/trending/all/week?APIKEY=${process.env.APIKEY}`;
 
 
 //  //creating a server
@@ -52,7 +52,7 @@ function Movie(id,title,release_date,poster_path,overview){
 
 function handelHomePage(req,res){
     
-    let mov = new Movie ( myMovie.title , myMovie.poster_path,myMovie.overview);
+    let mov = new Movie ( Movie.title , myMovie.poster_path,myMovie.overview);
 
      return res.status(200).json(mov);
     } 
@@ -86,7 +86,7 @@ function handelHomePage(req,res){
 
 
     function searchMovHandler(req,res){
-        let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=The&page=3`;
+        let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.APIKEY}&language=en-US&query=The&page=3`;
         console.log(url);
         axios.get(url)
         .then((x)=>{
