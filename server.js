@@ -1,22 +1,19 @@
 'use strict';
 
 require('dotenv').config();
-
-//use the packages
 const express= require('express');
 const cors = require('cors');
 const axios= require('axios');
-
+const pg = require('pg');
 const PORT= process.env.PORT;
 
-//const myMovie=require(`./Movies-Library/MovieData/data.json`);
-const res = require('express/lib/response');
+const client = new pg.Client(process.env.DATABASE_URL);
 
-let url = `https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.API_KEY}`;
+const server= express();
+server.use(cors());
+server.use(express.json());
 
 
-//  //creating a server
- const server= express();
  server.use(cors());
 
  server.get('/',handelHomePage);
@@ -24,9 +21,10 @@ let url = `https://api.themoviedb.org/3/trending/all/week?api_key=${process.env.
  
  server.get('/search',searchMovHandler);
  server.get('/trending',trendsHandler);
- server.use('*',handelNotFound);
+ server.post('/addMovie',addFavMovie);
+server.get('/getMovies',myFavMovies);
 server.use(errorHandler);
-
+server.use('*',notFoundHandler);
 
 function Movie(id,title,release_date,poster_path,overview){
     this.id=id;
@@ -37,16 +35,44 @@ function Movie(id,title,release_date,poster_path,overview){
  }
 
 
-
-
-
 function handelHomePage(req,res){
     
     let mov = new Movie ( myMovie.title , myMovie.poster_path,myMovie.overview);
 
      return res.status(200).json(mov);
     } 
+    
 
+    function trendsHandler(req,res){
+        let url = `https://api.themoviedb.org/3/trending/all/week?${process.env.API_KEY}&language=en-US`;
+               axios.get(url)
+               .then((x)=>{
+                   console.log(x.data);
+                  let movies= x.data.results.map(movie1 =>{
+                   
+                       return new Movie(movie1.id,movie1.title,movie1.release_date,movie1.poster_path,movie1.overview);
+                   })
+                   res.status(200).json(movies);
+               }).catch((err)=>{
+                   errorHandler(err,req,res);
+               })
+           }
+           let url= `https://api.themoviedb.org/3/search/movie?${process.env.API_KEY}&language=en-US&query=The&page=2`;
+           function searchMovHandler(req,res){
+           
+            console.log(url);
+            axios.get(url)
+            .then((x)=>{
+                let movies = x.data.results.map(movie1 =>{
+                    return new Movie(movie1.title,movie1.overview,movie1.original_title,movie1.poster_path,movie1.backdrop_path);
+                })
+                res.status(200).json(movies);
+            }).catch((err)=>{
+                    errorHandler(err,req,res);
+            })
+            
+        }
+    
 
     function handelfavPage(req,response)
 {
@@ -54,49 +80,26 @@ function handelHomePage(req,res){
     return response.status(200).send("Welcome to Favorite Page");
 }
 
-
-
-    function trendsHandler(req,res){
- console.log(url);       
-        axios.get(url)
-        .then((x)=>{
-            console.log(x.data);
-           let movies= x.data.results.map(movie1 =>{
-            
-                return new Movie(movie1.id,movie1.title,movie1.release_date,movie1.poster_path,movie1.overview);
-            })
-            res.status(200).json(movies);
-        }).catch((err)=>{
-            errorHandler(err,req,res);
-        })
-    }
-           
-       
+function addFavMovie(req,res){
+    const movi = req.body;
+  /  console.log(movi)
+    let sql = `INSERT INTO anyMovie(title,readyInMinutes,summary,vegetarian,instructions,sourceUrl) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *;`
+    let values=[movi.title,movi.readyInMinutes,movi.summary,movi.vegetarian,movi.instructions,movi.sourceUrl];
+    client.query(sql,values).then(data =>{
+        res.status(200).json(data.rows);
+    }).catch(error=>{
+        errorHandler(error,req,res)
+    });
+  }
+  
 
 
 
-    function searchMovHandler(req,res){
-        let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&language=en-US&query=The&page=3`;
-        console.log(url);
-        axios.get(url)
-        .then((x)=>{
-            let movies = x.data.results.map(movie1 =>{
-                return new Movie(movie1.title,movie1.overview,movie1.original_title,movie1.poster_path,movie1.backdrop_path);
-            })
-            res.status(200).json(movies);
-        }).catch((err)=>{
-                errorHandler(err,req,res);
-        })
-        
-    }
 
+    function notFoundHandler(req,res){
+        res.status(404).send("This page is not found")
+     }
 
-function handelNotFound(req,response)
-{
-    return response.status(404).send("Sorry, something went wrong");
-    
-       
-}
 
 function errorHandler (error ,req ,res){
     const err=
@@ -107,13 +110,8 @@ function errorHandler (error ,req ,res){
             res.status(500).send (err);
     }
 
-    
-//run the server
-server.listen(PORT,()=>{
-    console.log(`listining to port ${PORT}`)
+client.connect().then(()=>{
+    server.listen(PORT,()=>{
+        console.log(`listining to port ${PORT}`)
+    })
 })
-
-
-
-
-
