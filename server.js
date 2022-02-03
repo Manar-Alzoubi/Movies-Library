@@ -82,9 +82,8 @@ function handelHomePage(req,res){
 
 function addFavMovie(req,res){
     const movi = req.body;
-  /  console.log(movi)
-    let sql = `INSERT INTO anyMovie(title,readyInMinutes,summary,vegetarian,instructions,sourceUrl) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *;`
-    let values=[movi.title,movi.readyInMinutes,movi.summary,movi.vegetarian,movi.instructions,movi.sourceUrl];
+    let sql = `INSERT INTO anyMovie(title,release_date,poster,overview,commentl) VALUES ($1,$2,$3,$4,$5) RETURNING *;`
+    let values=[movi.title,movi.release_date,movi.poster,movi.overview,movi.commentl];
     client.query(sql,values).then(data =>{
         res.status(200).json(data.rows);
     }).catch(error=>{
@@ -92,7 +91,14 @@ function addFavMovie(req,res){
     });
   }
   
-
+  function myFavMovies(req,res){
+    let sql = `SELECT * FROM anyMovie;`;
+    client.query(sql).then(data=>{
+       res.status(200).json(data.rows);
+    }).catch(error=>{
+        errorHandler(error,req,res)
+    });
+}
 
 
 
