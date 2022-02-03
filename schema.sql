@@ -8,5 +8,4 @@ CREATE TABLE anyMovie(
      poster VARCHAR(1000),
      overview VARCHAR(1000),
      comment VARCHAR(255)
-
 );

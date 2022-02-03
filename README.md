@@ -26,11 +26,21 @@
 <!-- create a constructor-->
 
 
+<!--use An APIKEY for data and used to retrive data about movies  -->
+<!-- handle homepage is created to represent homepage as seeing properities of movies -->
+<!-- handle search  is created to represent homepage as seeing properities of movies but with specific number of results uses some quires -->
+
+
+
+
 ## methods in repo 
 <!-- trendsHandler(req,res)> to handel the trending movies and return some properities of the movie-->
+<!__ go to localhost:3000/trending then you will retrive movies that trinding now __>
 
 <!--> searchMovHandler(req,res)  handling the operation of search about a movie to return the properities of it -->
-
+<!__go to localhost:3000/search then you will retrive movies that which were some properities specified such : language it set to en-Us && the page =3 __>
 ## Project Features
 <!-- What are the features included in you app -->
+ <!__Easy to change PORT such it assigned to a variable and used the variable in the link __>
+ <!__ easy to use __>
  
