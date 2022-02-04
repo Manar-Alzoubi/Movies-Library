@@ -29,6 +29,8 @@
 <!--use An APIKEY for data and used to retrive data about movies  -->
 <!-- handle homepage is created to represent homepage as seeing properities of movies -->
 <!-- handle search  is created to represent homepage as seeing properities of movies but with specific number of results uses some quires -->
+<!-- I created a database called environment and made a connection to the server . -->
+
 
 <!--use An APIKEY for data and used to retrive data about movies  -->
 <!-- handle homepage is created to represent homepage as seeing properities of movies -->
@@ -55,11 +57,13 @@
 <!-- addFavMovie(req,res)> to add  movie to the table in the databasee -->
 <!--function myFavMovies(req, res) to get from database the movie that I add to favourite databasee -->
 
-<!--server.get('/oneFavMovie/:id',oneFavMovie);-->
+
+<!--server.get('/oneFavMovie/:id',oneFavMovie)-->
 
 
-<!--server.put('/updateMovie/:id',updateMovie); -->
-<!--server.delete('/deleteMovie/:id',deleteMovie);-->
+<!--server.put('/updateMovie/:id',updateMovie) -->
+<!--server.delete('/deleteMovie/:id',deleteMovie)-->
+
 
 ## Project Features
 <!-- What are the features included in you app -->
