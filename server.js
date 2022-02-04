@@ -12,6 +12,8 @@ const client = new pg.Client(process.env.DATABASE_URL);
 const server = express();
 server.use(express.json());
 
+//const myMovie=require(`./Movies-Library/MovieData/data.json`);
+const res = require('express/lib/response');
 
 server.use(cors());
 
@@ -103,8 +105,21 @@ function myFavMovies(req, res) {
     }).catch(error => {
         errorHandler(error, req, res)
     });
-}
-
+  }
+    function searchMovHandler(req,res){
+        let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.APIKEY}&language=en-US&query=The&page=3`;
+        console.log(url);
+        axios.get(url)
+        .then((x)=>{
+            let movies = x.data.results.map(movie1 =>{
+                return new Movie(movie1.title,movie1.overview,movie1.original_title,movie1.poster_path,movie1.backdrop_path);
+            })
+            res.status(200).json(movies);
+        }).catch((err)=>{
+                errorHandler(err,req,res);
+        })
+        
+    }
 
 
 function notFoundHandler(req, res) {
@@ -125,3 +140,4 @@ client.connect().then(() => {
         console.log(`listining to port ${PORT}`)
     })
 })
+
