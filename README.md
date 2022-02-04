@@ -30,7 +30,19 @@
 <!-- handle homepage is created to represent homepage as seeing properities of movies -->
 <!-- handle search  is created to represent homepage as seeing properities of movies but with specific number of results uses some quires -->
 
+<!--use An APIKEY for data and used to retrive data about movies  -->
+<!-- handle homepage is created to represent homepage as seeing properities of movies -->
+<!-- handle search  is created to represent homepage as seeing properities of movies but with specific number of results uses some quires -->
+<!-- I created a database called environment and made a connection to the server . -->
 
+<!-- I created a function to add movie to my favorites  . -->
+<!-- I created a function to retrive movies which I added in the favourite page  . -->
+<!-- I tested the connection and the adding of movies into the database  . -->
+<!-- I tested the connection and the adding of movies into the database using postman . -->
+<!-- I created a function to add  movie to the database . -->
+<!-- I created a function to update  movie that exist in database  . -->
+<!-- I created a function to delete a movie   . -->
+<!-- the code is run successfuly   . -->
 
 
 ## methods in repo 
@@ -39,6 +51,16 @@
 
 <!--> searchMovHandler(req,res)  handling the operation of search about a movie to return the properities of it -->
 <!__go to localhost:3000/search then you will retrive movies that which were some properities specified such : language it set to en-Us && the page =3 __>
+
+<!-- addFavMovie(req,res)> to add  movie to the table in the databasee -->
+<!--function myFavMovies(req, res) to get from database the movie that I add to favourite databasee -->
+
+<!--server.get('/oneFavMovie/:id',oneFavMovie);-->
+
+
+<!--server.put('/updateMovie/:id',updateMovie); -->
+<!--server.delete('/deleteMovie/:id',deleteMovie);-->
+
 ## Project Features
 <!-- What are the features included in you app -->
  <!__Easy to change PORT such it assigned to a variable and used the variable in the link __>
